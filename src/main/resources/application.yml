@@ -1,0 +1,15 @@
+server:
+  port: 9091
+spring:
+  application:
+    name: customer-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/customer_api
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
