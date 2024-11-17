@@ -2,3 +2,7 @@ spring:
   flyway:
     clean-disabled: false
     clean-on-validation-error: true
+
+application:
+  cognito:
+    user-pool-id: us-east-1_7uwEXtAOv

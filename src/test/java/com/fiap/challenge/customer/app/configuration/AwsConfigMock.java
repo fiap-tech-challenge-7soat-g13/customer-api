@@ -3,7 +3,7 @@ package com.fiap.challenge.customer.app.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import software.amazon.awssdk.services.lambda.LambdaClient;
+import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 
 import static org.mockito.Mockito.mock;
 
@@ -12,8 +12,8 @@ import static org.mockito.Mockito.mock;
 public class AwsConfigMock {
 
     @Bean
-    public LambdaClient lambdaClient() {
-        return mock(LambdaClient.class);
+    public CognitoIdentityProviderClient cognitoIdentityProviderClientClient() {
+        return mock(CognitoIdentityProviderClient.class);
     }
 
 }
