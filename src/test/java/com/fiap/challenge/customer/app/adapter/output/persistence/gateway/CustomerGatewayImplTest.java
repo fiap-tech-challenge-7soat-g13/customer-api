@@ -1,15 +1,17 @@
 package com.fiap.challenge.customer.app.adapter.output.persistence.gateway;
 
-import com.fiap.challenge.customer.app.adapter.output.externalapis.SignUpClient;
+import com.fiap.challenge.customer.app.adapter.output.externalapis.CredentialsClient;
 import com.fiap.challenge.customer.app.adapter.output.persistence.entity.CustomerEntity;
 import com.fiap.challenge.customer.app.adapter.output.persistence.mapper.CustomerMapper;
 import com.fiap.challenge.customer.app.adapter.output.persistence.repository.CustomerRepository;
+import com.fiap.challenge.customer.core.common.exception.EntityNotFoundException;
 import com.fiap.challenge.customer.core.domain.Customer;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CustomerGatewayImplTest {
@@ -18,9 +20,9 @@ class CustomerGatewayImplTest {
 
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
 
-    private final SignUpClient signUpClient = mock(SignUpClient.class);
+    private final CredentialsClient credentialsClient = mock(CredentialsClient.class);
 
-    private final CustomerGatewayImpl customerGateway = new CustomerGatewayImpl(customerMapper, customerRepository, signUpClient);
+    private final CustomerGatewayImpl customerGateway = new CustomerGatewayImpl(customerMapper, customerRepository, credentialsClient);
 
     @Test
     void shouldSave() {
@@ -40,12 +42,45 @@ class CustomerGatewayImplTest {
 
         Customer actual = customerGateway.save(customer);
 
-        verify(signUpClient).signUp(customer.getEmail(), customer.getPassword());
+        verify(credentialsClient).create(customer.getEmail(), customer.getPassword());
         verify(customerMapper).toCustomerEntity(customer);
         verify(customerRepository).save(entity);
         verify(customerMapper).toCustomer(savedEntity);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldFindById() {
+
+        Long id = 1L;
+        CustomerEntity entity = new CustomerEntity();
+        Customer expected = new Customer();
+
+        when(customerRepository.findById(id)).thenReturn(Optional.of(entity));
+        when(customerMapper.toCustomer(entity)).thenReturn(expected);
+
+        Optional<Customer> actual = customerGateway.findById(id);
+
+        verify(customerRepository).findById(id);
+        verify(customerMapper).toCustomer(entity);
+
+        assertEquals(Optional.of(expected), actual);
+    }
+
+    @Test
+    void shouldNotFindById() {
+
+        Long id = 1L;
+
+        when(customerRepository.findById(id)).thenReturn(Optional.empty());
+
+        Optional<Customer> actual = customerGateway.findById(id);
+
+        verify(customerRepository).findById(id);
+        verify(customerMapper, never()).toCustomer(any(CustomerEntity.class));
+
+        assertTrue(actual.isEmpty());
     }
 
     @Test
@@ -99,6 +134,37 @@ class CustomerGatewayImplTest {
         verify(customerMapper).toCustomer(entities);
 
         assertEquals(expected, actual);
+    }
+
+
+    @Test
+    void shouldRemoveById() {
+
+        Long id = 1L;
+        CustomerEntity entity = new CustomerEntity();
+        entity.setEmail("email@email.com");
+
+        when(customerRepository.findById(id)).thenReturn(Optional.of(entity));
+
+        customerGateway.removeById(id);
+
+        verify(customerRepository).findById(id);
+        verify(credentialsClient).delete(entity.getEmail());
+        verify(customerRepository).delete(entity);
+    }
+
+    @Test
+    void shouldNotRemoveById() {
+
+        Long id = 1L;
+
+        when(customerRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> customerGateway.removeById(id));
+
+        verify(customerRepository).findById(id);
+        verify(credentialsClient, never()).delete(any());
+        verify(customerRepository, never()).delete(any());
     }
 
 }
