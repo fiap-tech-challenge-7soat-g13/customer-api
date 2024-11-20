@@ -5,4 +5,4 @@ spring:
 
 application:
   cognito:
-    user-pool-id: us-east-1_7uwEXtAOv
+    user-pool-id: us-east-1_cGBlLjpZP
