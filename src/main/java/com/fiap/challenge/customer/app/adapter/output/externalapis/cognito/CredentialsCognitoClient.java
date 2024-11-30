@@ -14,7 +14,7 @@ public class CredentialsCognitoClient implements CredentialsClient {
 
     private final CognitoIdentityProviderClient cognitoIdentityProviderClient;
 
-    public CredentialsCognitoClient(@Value("${application.cognito.user-pool-id}") String userPoolId, CognitoIdentityProviderClient cognitoIdentityProviderClient) {
+    public CredentialsCognitoClient(@Value("${application.cognito.userPoolId}") String userPoolId, CognitoIdentityProviderClient cognitoIdentityProviderClient) {
         this.userPoolId = userPoolId;
         this.cognitoIdentityProviderClient = cognitoIdentityProviderClient;
     }

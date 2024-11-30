@@ -72,6 +72,7 @@ jobs:
           sed -i "s/\${AWS_ACCESS_KEY_ID}/$(echo -n ${{ secrets.AWS_ACCESS_KEY_ID }} | base64 -w 0)/g" k8s/secret.yaml
           sed -i "s/\${AWS_SECRET_ACCESS_KEY}/$(echo -n ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 -w 0)/g" k8s/secret.yaml
           sed -i "s/\${AWS_REGION}/$(echo -n ${{ secrets.AWS_REGION }} | base64 -w 0)/g" k8s/secret.yaml
+          sed -i "s/\${APPLICATION_COGNITO_USERPOOLID}/$(echo -n ${{ secrets.APPLICATION_COGNITO_USERPOOLID }} | base64 -w 0)/g" k8s/secret.yaml
       - name: Deploy to EKS
         run: kubectl apply -f k8s
       - name: Rollout Restart
