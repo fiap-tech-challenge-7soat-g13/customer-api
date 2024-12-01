@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @AllArgsConstructor
@@ -30,29 +30,28 @@ public class CustomerGatewayImpl implements CustomerGateway {
         return mapper.toCustomer(customerSave);
     }
 
-    public Optional<Customer> findById(Long id) {
-        Optional<CustomerEntity> customerEntity = repository.findById(id);
-        return customerEntity.map(mapper::toCustomer);
+    public Customer findById(UUID id) {
+        return mapper.toCustomer(repository.findById(id));
     }
 
     public List<Customer> findAll() {
-        List<CustomerEntity> customerList = repository.findAll();
-        return mapper.toCustomer(customerList);
+        return mapper.toCustomer(repository.findAll());
     }
 
     @Transactional
     public List<Customer> findByDocument(String document) {
-        List<CustomerEntity> customerList = repository.findByDocument(document);
-        return mapper.toCustomer(customerList);
+        return mapper.toCustomer(repository.findByDocument(document));
     }
 
     public List<Customer> findByEmail(String email) {
-        List<CustomerEntity> customerList = repository.findByEmail(email);
-        return mapper.toCustomer(customerList);
+        return mapper.toCustomer(repository.findByEmail(email));
     }
 
-    public void removeById(Long id) {
-        CustomerEntity customerEntity = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public void removeById(UUID id) {
+        CustomerEntity customerEntity = repository.findById(id);
+        if (customerEntity == null)
+            throw new EntityNotFoundException();
+
         credentialsClient.delete(customerEntity.getEmail());
         repository.delete(customerEntity);
     }

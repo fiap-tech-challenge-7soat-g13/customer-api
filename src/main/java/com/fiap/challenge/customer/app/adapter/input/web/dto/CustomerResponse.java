@@ -3,11 +3,13 @@ package com.fiap.challenge.customer.app.adapter.input.web.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 public class CustomerResponse {
 
-    private Long id;
+    private UUID id;
     private String name;
     private String email;
     private String document;

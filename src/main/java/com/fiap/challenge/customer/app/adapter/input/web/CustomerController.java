@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -35,13 +36,13 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerResponse get(@PathVariable Long id) {
+    public CustomerResponse get(@PathVariable UUID id) {
         Customer customer = customerGetUseCase.execute(id);
         return customerResponseMapper.toCustomerResponse(customer);
     }
 
     @DeleteMapping("/{id}")
-    public void remove(@PathVariable Long id) {
+    public void remove(@PathVariable UUID id) {
         customerRemoveUseCase.execute(id);
     }
 

@@ -14,10 +14,11 @@ public class AwsConfig {
 
     @Bean
     public CognitoIdentityProviderClient cognitoIdentityProviderClientClient() {
-        return CognitoIdentityProviderClient.builder()
-                .region(Region.of(System.getenv(SdkSystemSetting.AWS_REGION.environmentVariable())))
-                .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
-                .build();
+//        return CognitoIdentityProviderClient.builder()
+//                .region(Region.of(System.getenv(SdkSystemSetting.AWS_REGION.environmentVariable())))
+//                .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
+//                .build();
+        return null;
     }
 
 }
