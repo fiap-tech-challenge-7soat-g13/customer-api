@@ -6,14 +6,20 @@ import com.fiap.challenge.customer.core.gateways.CustomerGateway;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class CustomerGetUseCase {
 
     private final CustomerGateway customerGateway;
 
-    public Customer execute(Long id) {
-        return customerGateway.findById(id).orElseThrow(EntityNotFoundException::new);
+    public Customer execute(UUID id) {
+        Customer customer = customerGateway.findById(id);
+        if (customer == null)
+            throw new EntityNotFoundException();
+
+        return customer;
     }
 
 }
