@@ -10,36 +10,36 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminDelete
 @Service
 public class CredentialsCognitoClient implements CredentialsClient {
 
-//    private final String userPoolId;
-//
-//    private final CognitoIdentityProviderClient cognitoIdentityProviderClient;
-//
-//    public CredentialsCognitoClient(@Value("${application.cognito.userPoolId}") String userPoolId, CognitoIdentityProviderClient cognitoIdentityProviderClient) {
-//        this.userPoolId = userPoolId;
-//        this.cognitoIdentityProviderClient = cognitoIdentityProviderClient;
-//    }
+    private final String userPoolId;
+
+    private final CognitoIdentityProviderClient cognitoIdentityProviderClient;
+
+    public CredentialsCognitoClient(@Value("${application.cognito.userPoolId}") String userPoolId, CognitoIdentityProviderClient cognitoIdentityProviderClient) {
+        this.userPoolId = userPoolId;
+        this.cognitoIdentityProviderClient = cognitoIdentityProviderClient;
+    }
 
     @Override
     public void create(String email, String password) {
 
-//        AdminCreateUserRequest request = AdminCreateUserRequest.builder()
-//                .userPoolId(userPoolId)
-//                .username(email)
-//                .temporaryPassword(password)
-//                .build();
-//
-//        cognitoIdentityProviderClient.adminCreateUser(request);
+        AdminCreateUserRequest request = AdminCreateUserRequest.builder()
+                .userPoolId(userPoolId)
+                .username(email)
+                .temporaryPassword(password)
+                .build();
+
+        cognitoIdentityProviderClient.adminCreateUser(request);
     }
 
     @Override
     public void delete(String email) {
 
-//        AdminDeleteUserRequest request = AdminDeleteUserRequest.builder()
-//                .userPoolId(userPoolId)
-//                .username(email)
-//                .build();
-//
-//        cognitoIdentityProviderClient.adminDeleteUser(request);
+        AdminDeleteUserRequest request = AdminDeleteUserRequest.builder()
+                .userPoolId(userPoolId)
+                .username(email)
+                .build();
+
+        cognitoIdentityProviderClient.adminDeleteUser(request);
     }
 
 }
