@@ -6,6 +6,7 @@ import com.fiap.challenge.customer.core.gateways.CustomerGateway;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,11 +21,11 @@ class CustomerGetUseCaseTest {
     @Test
     void shouldGet() {
 
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
 
         Customer expected = new Customer();
 
-        when(customerGateway.findById(id)).thenReturn(Optional.of(expected));
+        when(customerGateway.findById(id)).thenReturn(expected);
 
         Customer actual = customerGetUseCase.execute(id);
 
@@ -36,9 +37,9 @@ class CustomerGetUseCaseTest {
     @Test
     void shouldThrowEntityNotFoundException() {
 
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
 
-        when(customerGateway.findById(id)).thenReturn(Optional.empty());
+        when(customerGateway.findById(id)).thenReturn(null);
 
         assertThrows(EntityNotFoundException.class, () -> customerGetUseCase.execute(id));
 

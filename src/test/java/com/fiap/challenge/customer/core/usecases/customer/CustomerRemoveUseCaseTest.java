@@ -3,6 +3,8 @@ package com.fiap.challenge.customer.core.usecases.customer;
 import com.fiap.challenge.customer.core.gateways.CustomerGateway;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -15,7 +17,7 @@ class CustomerRemoveUseCaseTest {
     @Test
     void shouldRemove() {
 
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
 
         customerRemoveUseCase.execute(id);
 
