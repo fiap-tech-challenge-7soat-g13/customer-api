@@ -9,7 +9,7 @@ import com.fiap.challenge.customer.core.domain.Customer;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -53,34 +53,34 @@ class CustomerGatewayImplTest {
     @Test
     void shouldFindById() {
 
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
         CustomerEntity entity = new CustomerEntity();
         Customer expected = new Customer();
 
-        when(customerRepository.findById(id)).thenReturn(Optional.of(entity));
+        when(customerRepository.findById(id)).thenReturn(entity);
         when(customerMapper.toCustomer(entity)).thenReturn(expected);
 
-        Optional<Customer> actual = customerGateway.findById(id);
+        Customer actual = customerGateway.findById(id);
 
         verify(customerRepository).findById(id);
         verify(customerMapper).toCustomer(entity);
 
-        assertEquals(Optional.of(expected), actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     void shouldNotFindById() {
 
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
 
-        when(customerRepository.findById(id)).thenReturn(Optional.empty());
+        when(customerRepository.findById(id)).thenReturn(null);
 
-        Optional<Customer> actual = customerGateway.findById(id);
+        Customer actual = customerGateway.findById(id);
 
         verify(customerRepository).findById(id);
         verify(customerMapper, never()).toCustomer(any(CustomerEntity.class));
 
-        assertTrue(actual.isEmpty());
+        assertNull(actual);
     }
 
     @Test
@@ -140,11 +140,11 @@ class CustomerGatewayImplTest {
     @Test
     void shouldRemoveById() {
 
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
         CustomerEntity entity = new CustomerEntity();
         entity.setEmail("email@email.com");
 
-        when(customerRepository.findById(id)).thenReturn(Optional.of(entity));
+        when(customerRepository.findById(id)).thenReturn(entity);
 
         customerGateway.removeById(id);
 
@@ -156,9 +156,9 @@ class CustomerGatewayImplTest {
     @Test
     void shouldNotRemoveById() {
 
-        Long id = 1L;
+        UUID id = UUID.randomUUID();
 
-        when(customerRepository.findById(id)).thenReturn(Optional.empty());
+        when(customerRepository.findById(id)).thenReturn(null);
 
         assertThrows(EntityNotFoundException.class, () -> customerGateway.removeById(id));
 
