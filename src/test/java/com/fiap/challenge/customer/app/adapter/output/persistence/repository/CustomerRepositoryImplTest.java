@@ -35,6 +35,21 @@ public class CustomerRepositoryImplTest {
     @Test
     void shouldSave() {
         CustomerEntity customerEntity = getCustomerEntityMock(null);
+        CustomerEntity customerEntityWithId = getCustomerEntityMock(null);
+
+        when(mongoTemplate.save(any())).thenReturn(customerEntityWithId);
+
+        CustomerEntity customerEntitySave = customerRepository.save(customerEntity);
+
+        verify(mongoTemplate).save(any());
+
+        assertNotNull(customerEntitySave);
+        assertEquals(customerEntitySave, customerEntityWithId);
+    }
+
+    @Test
+    void shouldSaveWithId() {
+        CustomerEntity customerEntity = getCustomerEntityMock(null);
         CustomerEntity customerEntityWithId = getCustomerEntityMock(UUID.randomUUID());
 
         when(mongoTemplate.save(any())).thenReturn(customerEntityWithId);
