@@ -2,6 +2,7 @@ package com.fiap.challenge.customer.app.adapter.output.externalapis.cognito;
 
 import com.fiap.challenge.customer.app.adapter.output.externalapis.CredentialsClient;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminCreateUserRequest;
