@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: customer-api
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - taste-food
+  http:
+    - match:
+        - uri:
+            exact: /customer
+        - uri:
+            prefix: /customer/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: customer-api.default.svc.cluster.local
+            port:
+              number: 80
