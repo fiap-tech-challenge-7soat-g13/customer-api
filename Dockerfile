@@ -1,4 +1,4 @@
-FROM 414700354900.dkr.ecr.us-east-1.amazonaws.com/base/amazoncorretto:21-alpine3.18
+FROM amazoncorretto:21-alpine3.18-jdk AS build
 WORKDIR /app
 
 ARG RDS_COMBINED_CA_BUNDLE_FILE=/tmp/rds-combined-ca-bundle.pem
