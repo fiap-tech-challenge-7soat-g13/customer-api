@@ -1,4 +1,4 @@
-FROM maven:3-eclipse-temurin-21-alpine AS build
+FROM 414700354900.dkr.ecr.us-east-1.amazonaws.com/base/amazoncorretto:21-alpine3.18
 WORKDIR /app
 
 ARG RDS_COMBINED_CA_BUNDLE_FILE=/tmp/rds-combined-ca-bundle.pem
