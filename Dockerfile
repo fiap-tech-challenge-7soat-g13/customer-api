@@ -22,6 +22,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 WORKDIR /app
-ADD --from=build /app/target/*.jar app.jar
+ADD /app/target/*.jar app.jar
 
 CMD [ "java", "-jar", "app.jar" ]
