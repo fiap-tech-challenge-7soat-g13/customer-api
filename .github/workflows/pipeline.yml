@@ -57,7 +57,6 @@ jobs:
         run: aws eks update-kubeconfig --name ${{ vars.AWS_EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
       - name: Replace Secrets
         run: |
-          sed -i "s/\${SPRING_DATASOURCE_URL}/$(echo -n ${{ secrets.SPRING_DATASOURCE_URL }} | base64 -w 0)/g" k8s/secret.yaml
           sed -i "s/\${AWS_ACCESS_KEY_ID}/$(echo -n ${{ secrets.AWS_ACCESS_KEY_ID }} | base64 -w 0)/g" k8s/secret.yaml
           sed -i "s/\${AWS_SECRET_ACCESS_KEY}/$(echo -n ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 -w 0)/g" k8s/secret.yaml
           sed -i "s/\${AWS_REGION}/$(echo -n ${{ secrets.AWS_REGION }} | base64 -w 0)/g" k8s/secret.yaml
