@@ -22,6 +22,8 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine
+
 WORKDIR /app
-ADD /app/target/*.jar app.jar
+ADD ./target/*.jar app.jar
+
 CMD [ "java", "-jar", "app.jar" ]
