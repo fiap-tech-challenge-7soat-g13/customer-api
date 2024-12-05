@@ -184,29 +184,31 @@
 		</plugins>
 	</build>
 
-	<profile>
-		<id>bdd-test</id>
-		<build>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${maven-surefire-plugin.version}</version>
-					<configuration>
-						<includes combine.self="override">
-							<include>**/StepDefinition.java</include>
-						</includes>
-						<excludes combine.self="override">
-						</excludes>
-						<properties>
-							<configurationParameters>
-								cucumber.junit-platform.naming-strategy=long
-							</configurationParameters>
-						</properties>
-					</configuration>
-				</plugin>
-			</plugins>
-		</build>
-	</profile>
+	<profiles>
+		<profile>
+			<id>bdd-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven-surefire-plugin.version}</version>
+						<configuration>
+							<includes combine.self="override">
+								<include>**/StepDefinition.java</include>
+							</includes>
+							<excludes combine.self="override">
+							</excludes>
+							<properties>
+								<configurationParameters>
+									cucumber.junit-platform.naming-strategy=long
+								</configurationParameters>
+							</properties>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
