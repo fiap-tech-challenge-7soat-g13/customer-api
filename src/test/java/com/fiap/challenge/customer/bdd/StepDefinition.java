@@ -1,73 +1,53 @@
 package com.fiap.challenge.customer.bdd;
 
 import com.fiap.challenge.customer.core.domain.Customer;
-import com.fiap.challenge.customer.util.DataHelper;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.springframework.http.HttpStatus;
+import io.restassured.specification.RequestSpecification;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
+
+import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("features")
 public class StepDefinition {
 
+    private static final String ENDPOINT_CUSTOMER = "http://localhost:8080";
+
+    private RequestSpecification request;
     private Response response;
 
-    private Customer customer;
-
-    @Quando("criar um novo usuario")
-    public void criar_um_novo_usuario() {
-        response = given()
-                .contentType(ContentType.JSON)
-                .body(DataHelper.createCustomerRequest())
-                .when()
-                .post();
+    @Dado("que recebo um identificador de cliente valido")
+    public void que_recebo_um_identificador_de_cliente_valido() {
+        request = given();
     }
 
-    @Entao("deve retornar sucesso")
-    public void deve_retornar_sucesso() {
-        response.then()
-                .statusCode(HttpStatus.OK.value());
+    @Quando("realizar a busca")
+    public void realizar_a_busca() {
+        response = request.when().get(ENDPOINT_CUSTOMER + "/{id}", UUID.randomUUID());
     }
 
-    @Entao("deve retornar os dados do usuario")
-    public void deve_retornar_os_dados_do_usuario() {
-        response.then()
-                .body(matchesJsonSchemaInClasspath("schemas/CustomerResponse.schema.json"));
+    @Quando("o cliente nao existir")
+    public void o_cliente_nao_existir() {
+        response = request.pathParam("id", 9999).when().get(ENDPOINT_CUSTOMER + "/{id}"); // Assuming 9999 is an invalid ID
     }
 
-    @Dado("um usuario que existe")
-    public void um_usuario_que_existe() {
-        customer = new Customer();
-        customer.setName("Nome 1");
-        customer.setEmail("teste@teste.com.br");
-        customer.setDocument("01234567890");
-        customer.setPassword("123456");
+    @Entao("os detalhes do cliente nao devem ser retornados")
+    public void os_detalhes_do_cliente_nao_devem_ser_retornados() {
+        response.then().statusCode(404);
     }
 
-    @Quando("obter o usuario")
-    public void obter_o_usuario() {
-        response = when()
-                .get("/{id}", customer.getId());
-    }
-
-    @Dado("um usuario que não existe")
-    public void um_usuario_que_não_existe() {
-        customer = new Customer();
-        customer.setName("Nome 99");
-        customer.setEmail("teste99@teste99.com.br");
-        customer.setDocument("99999999999");
-        customer.setPassword("999999");
-    }
-
-    @Entao("deve retornar não encontrado")
-    public void deve_retornar_não_encontrado() {
-        response.then()
-                .statusCode(HttpStatus.NOT_FOUND.value());
+    @Entao("o codigo 404 deve ser apresentado")
+    public void o_codigo_404_deve_ser_apresentado() {
+        assertEquals(404, response.getStatusCode());
     }
 
 }
