@@ -1,24 +1,17 @@
-package com.fiap.challenge.customer.bdd;
+package com.fiap.challenge.customer.app.adapter.input.web;
 
-import com.fiap.challenge.customer.core.domain.Customer;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.junit.platform.suite.api.IncludeEngines;
-import org.junit.platform.suite.api.SelectClasspathResource;
-import org.junit.platform.suite.api.Suite;
 
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Suite
-@IncludeEngines("cucumber")
-@SelectClasspathResource("features")
-public class StepDefinition {
+public class CustomerControllerSteps {
 
     private static final String ENDPOINT_CUSTOMER = "http://localhost:8080";
 
