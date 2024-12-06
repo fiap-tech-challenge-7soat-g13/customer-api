@@ -85,8 +85,6 @@ class CustomerControllerTest {
     @Test
     void shouldRemove() {
         UUID id = UUID.randomUUID();
-        Customer expectedWithId = getCustomerMock(id);
-        CustomerResponse customerResponseMock = getCustomerResponseMock(id);
 
         doNothing().when(customerRemoveUseCase).execute(any());
 
